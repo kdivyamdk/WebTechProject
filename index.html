@@ -1,0 +1,232 @@
+<!DOCTYPE HTML>
+<html>
+	<head> 
+		<title>Popular</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="stylesheets/main.css" />
+		<script>
+			xhr=new XMLHttpRequest();
+			scrollAmt=300;
+			count=0;
+			function getChunk(){
+				scroll=document.body.scrollTop||document.documentElement.scrollTop;
+				if(scroll>scrollAmt){
+					scrollAmt=scroll;
+					xhr.onreadystatechange=showChunk;
+					xhr.open("GET","getcontent.php?count="+count++,true);
+					xhr.send();
+				}
+			}
+			function showChunk(){
+			console.log(xhr.status)
+				if(xhr.readyState==4 && xhr.status==200){
+					document.getElementById("help").innerHTML+=xhr.responseText;
+				}
+			}
+			window.onscroll=getChunk;
+
+
+				function Suggest(){
+							var dit = new Object();
+							var dit={
+								Gnocchi_With_Sausage_and_Spinach:"detail1.html",
+								Linguine_With_Tomato_Sauce:"detail2.html",
+								Tuscan_Bean_Soup:"detail3.html",
+								Chicken_With_White_Beans_and_Tomatoes:"detail4.html",
+								Lemony_Tuna_and_Olive_Oil_Pasta:"detail5.html",
+								Antipasto_Salad:"detail6.html",
+								Cheese_Ravioli_With_Toasted_Walnuts:"detail7.html",
+								Eggplant_Parmesan_Rollatini:"detail8.html",
+								Chicken_Cacciatore:"detail9.html",
+								Salami_and_Spinach_Stromboli:"detail10.html",
+								Chicken_Curry_in_a_Hurry:"detail11.html",
+								Tandoori_Shrimp_With_Rice_and_Peas:"detail12.html",
+								Easy_Samosas:"detail13.html",
+								Spiced_Chicken_Salad_With_Plums_and_Chickpeas:"detail14.html",
+								Curried_Rice_With_Shrimp:"detail15.html",
+								Slow_Cooker_Chicken_Tikka_Masala:"detail16.html",
+								Curried_Eggplant_With_Tomatoes_and_Basil:"detail17.html",
+								Slow_Cooker_Curried_Chicken_With_Ginger_and_Yogurt:"detail18.html",
+								Curry_Roasted_Chicken_and_Okra:"detail19.html",
+								Spicy_Beef_and_Broccolini_Stir_Fry:"detail20.html",
+								Vegetable_Fried_Rice:"detail21.html",
+								Garlicky_Hoisin_Beef:"detail22.html",
+								Stir_Fried_Shrimp_and_Broccoli:"detail23.html",
+								Ginger_Stuffed_Chicken_With_Sesame_Spinach:"detail24.html",
+								Salmon_With_Gingery_Green_Beans_and_Bok_Choy:"detail25.html",
+								Shrimp_Lo_Mein:"detail26.html",
+								Slow_Cooker_Sweet_and_Spicy_Asian_Pork_Shoulder:"detail27.html",
+								Turkey_Fried_Rice:"detail28.html",
+								Cantonese_Chicken_With_Vegetables:"detail29.html"
+							};
+							//maintain reference to current object
+							object=this;
+							this.search=null;
+							this.timer=null;
+							this.search=null;
+							this.url=null;
+							this.xhr=new XMLHttpRequest();
+						//every 1ms, we fetch  the search bar data
+							this.getTerm=function(){
+								if(this.timer){
+									clearTimeout(this.timer);
+								}
+								this.timer=setTimeout(this.sendTerm,1)
+							};
+						//seach time you remove a text, remove the word and start fresh. 
+							this.sendTerm=function(){
+								
+								var qw=document.getElementById("container");
+								if(qw){
+									var child=qw.lastElementChild;
+									while(child){
+										qw.removeChild(child);
+										child=qw.lastElementChild;
+									}					
+								}
+							//sending gnocci, checking php, redirect to url 
+								object.search=document.getElementById("item");
+								var term=object.search.value;
+								console.log("sending"+term);
+								if(term!=""){
+									object.url="suggest.php?term="+term;
+									object.xhr.onreadystatechange=object.showResult;
+									object.xhr.open("GET",object.url,true);
+									object.xhr.send();
+								}
+							}
+							this.showResult=function() {
+								if(this.readyState==4 && this.status==200){
+									var res=this.responseText;
+									var resJSON=JSON.parse(res);
+									if(resJSON.length==0){
+										
+										object.search.style.fontStyle="italics";
+										object.search.onblur=function(){
+											object.search.value="";
+											object.search.style.backgroundColor="white";
+											object.search.style.fontStyle="normal";
+										}
+
+									}
+									else{
+										object.populateFood(resJSON);
+
+									}
+								}
+							}
+							this.populateFood=function(resO){
+								object.container=document.getElementById("container");
+								for(f in resO){
+									var itemdiv=document.createElement("div");
+									itemdiv.className="food_item";
+									itemdiv.innerHTML=resO[f];
+									itemdiv.onclick=object.setFood;
+									object.container.appendChild(itemdiv);
+								}
+								object.container.style.display="block";
+							}
+							this.setFood=function(e){
+								location.replace("http://localhost/WEBTECH2/"+dit[e.target.innerHTML]);
+
+								var result=e.target.innerHTML;
+								object.search.value=result;
+								object.container.innerHTML="";
+								object.container.style.display="none";
+							}
+						}
+						var obj=new Suggest();
+		</script>
+	</head>
+	<body>
+
+<div class="title">
+	<h1>FOODOLOGY</h1>
+	<table border="0" align="center" width="50%">
+		<tr>
+			<H2> <td>FOOD</td> </H2>
+			<td><input type="text" id="item" onkeydown="obj.getTerm()" width="300" ></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><div id="container"></div></td>
+		</tr>
+	</table>
+</div>
+		<ol id="Menu">
+  			<li><a href= "home.html">Home</a></li>
+  			<li><a href= "about.html">About</a></li>
+  			<li><a href= "streaming.html">Promo</a></li>
+		</ol>
+
+<main>
+			<header id="header">
+				<div class="inner">
+					<div class="content">
+						<h1>FOODOLOGY</h1>
+						<h2> A web tech project</h2>
+						<a href="#" class="button big alt"><span>Let's Go</span></a>
+					</div>
+					<a href="#" class="button hidden"><span>Let's Go</span></a>
+				</div>
+			</header> 
+			<div id="main">
+				<div class="inner">
+					<div class="columns" id="help">
+							<div class="image fit">
+								<a href="detail1.html"><img src="images/pic01.jpg" alt="" /></a>
+							</div>
+							<div class="image fit">
+								<a href="detail2.html"><img src="images/pic02.jpg" alt="" /></a>
+							</div>
+							<div class="image fit">
+								<a href="detail3.html"><img src="images/pic03.jpg" alt="" /></a>
+							</div>
+							<div class="image fit">
+								<a href="detail4.html"><img src="images/pic04.jpg" alt="" /></a>
+							</div>
+							<div class="image fit">
+								<a href="detail5.html"><img src="images/pic06.jpg" alt="" /></a>
+							</div>
+							<div class="image fit">
+								<a href="detail6.html"><img src="images/pic05.jpg" alt="" /></a>
+							</div>
+							<div class="image fit">
+								<a href="detail7.html"><img src="images/pic07.jpg" alt="" /></a>
+							</div>
+							<div class="image fit">
+								<a href="detail8.html"><img src="images/pic08.jpg" alt="" /></a>
+							</div>
+							<div class="image fit">
+								<a href="detail13.html"><img src="images/pic13.jpg" alt="" /></a>
+							</div>
+							<div class="image fit">
+								<a href="detail14.html"><img src="images/pic14.jpg" alt="" /></a>
+							</div>
+							<div class="image fit">
+								<a href="detail15.html"><img src="images/pic15.jpg" alt="" /></a>
+							</div>
+							<div class="image fit">
+								<a href="detail16.html"><img src="images/pic16.jpg" alt="" /></a>
+							</div>
+							
+					</div>
+				</div>
+			</div>
+
+	<!--FOOTER-->
+<footer>
+	<a href="#" class="fa fa-facebook"></a>
+	<a href="#" class="fa fa-twitter"></a>
+	<a href="#" class="fa fa-youtube"></a>
+	<a href="#" class="fa fa-instagram"></a>
+</footer>
+		<!-- Scripts -->
+			<script src="js/jquery.min.js"></script>
+			<script src="js/skel.min.js"></script>
+			<script src="js/util.js"></script>
+			<script src="js/main.js"></script>
+
+	</body>
+</html>

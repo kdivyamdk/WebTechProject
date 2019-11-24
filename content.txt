@@ -1,0 +1,10 @@
+<p >27-year-old Vinesh Johny, has many titles to his name. Having accomplished immense fame in his young age he has been bestowted with numerous awards!
+      <br><br>Co-Founder and Executive Pastry Chef at Lavonne Academy of Baking Science and Pastry Arts
+      <br><br>Professional baker Vinesh Johny, who is passionate about his craft, brings world-class culinary education to India through his Academy of Baking Science & Pastry Arts Lavonne. Vinesh was featured in the inaugural Forbes 30 under 30 Asia list for 2016 in the Arts category. Lavonne won the Times Food Award 2016 in the best confectionery category.
+    </p>
+    <br><br>
+    <H1>The master at work</H1>
+    <br><br>
+    <div id= "second">
+    <p>Vinesh set up Lavonne in 2012, at the age of 24, along with his co-founders Avin Thaliath and Lijo Eapean in Bengaluru, with the aim of making pastry arts a mainstream career choice. The idea of Lavonne, Indias first international baking academy, came up when Vinesh was pursuing his bachelors degree in Hotel Management at Christ College. He then discussed the idea with his professor Avin and his batch mate Lijo and there was no turning back. Vinesh says, <q>Back in 2008, when I was a student, I wanted to pursue an advanced-level baking course. At that point in time, we didn’t have anything in India. We had to travel to Australia, Malaysia, or France. So that is when I released that there was a void in the Indian market, when it comes to teaching pastry making and high-level baking.</q> After graduating, he went on to work with The Oberoi Group of Hotels and Starwood Hotels and Resorts. He pursued his Diploma in Sugar Art and Wedding cake decoration at Feves de</p>
+  </div>

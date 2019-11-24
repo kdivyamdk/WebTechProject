@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<style >
+		#container{
+			border: solid 1px black;
+			display: none;
+		}
+		.fooditem{
+			background-color: grey;
+			color: black;
+		}
+		.fooditem:hover{
+			background-color: white;
+		}
+		.food_item {
+		    line-height:24pt;
+		    border: solid 1px black;
+		}
+
+		.food_item:nth-child(odd) {
+		    background: #ffb3b3;
+		}
+		}
+	</style>
+	<script>
+		function Suggest(){
+			object=this;
+			this.search=null;
+			this.timer=null;
+			this.search=null;
+			this.url=null;
+			this.xhr=new XMLHttpRequest();
+			this.getTerm=function(){
+				if(this.timer){
+					clearTimeout(this.timer);
+				}
+				this.timer=setTimeout(this.sendTerm,1)
+			}
+			this.sendTerm=function(){
+				
+				var qw=document.getElementById("container");
+				if(qw){
+					var child=qw.lastElementChild;
+					while(child){
+						qw.removeChild(child);
+						child=qw.lastElementChild;
+					}					
+				}
+				object.search=document.getElementById("item");
+				var term=object.search.value;
+				console.log("sending"+term);
+				object.url="http://localhost/project/search/suggest.php?term="+term;
+				object.xhr.onreadystatechange=object.showResult;
+				object.xhr.open("GET",object.url,true);
+				object.xhr.send();
+			}
+			this.showResult=function() {
+				if(this.readyState==4 && this.status==200){
+					var res=this.responseText;
+					var resJSON=JSON.parse(res);
+					if(resJSON.length==0){
+						object.search.value="No results found";
+						object.search.style.fontStyle="italics";
+						object.search.onblur=function(){
+							object.search.value="";
+							object.search.style.backgroundColor="white";
+							object.search.style.fontStyle="normal";
+						}
+
+					}
+					else{
+						object.populateFood(resJSON);
+
+					}
+				}
+			}
+			this.populateFood=function(resO){
+				object.container=document.getElementById("container");
+				for(f in resO){
+					var itemdiv=document.createElement("div");
+					itemdiv.className="food_item";
+					itemdiv.innerHTML=resO[f];
+					itemdiv.onclick=object.setFood;
+					object.container.appendChild(itemdiv);
+				}
+				object.container.style.display="block";
+			}
+			this.setFood=function(e){
+				var result=e.target.innerHTML;
+				object.search.value=result;
+				object.container.innerHTML="";
+				object.container.style.display="none";
+			}
+		}
+		var obj=new Suggest();
+	</script>
+</head>
+<body>
+	<table border="0" align="center" width="50%">
+		<tr>
+			<td>FOOD</td>
+			<td><input type="text" id="item" onkeydown="obj.getTerm()" width="300" ></td>
+		</tr>
+		<tr>
+			<td></td>
+			<td><div id="container"></div></td>
+		</tr>
+	</table>
+</body>
+</html>
